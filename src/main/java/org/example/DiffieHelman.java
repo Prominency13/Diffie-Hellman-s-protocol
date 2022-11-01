@@ -1,12 +1,11 @@
 package org.example;
 
 public class DiffieHelman {
-    private int privateKey;
+    private final int privateKey;
     private int primeKey;
     private int generateKey;
     private int publicKey;
     private int exchangedKey;
-    private int secondaryKey;
 
     public DiffieHelman(int privateKey, int primeKey, int generateKey) {
         this.privateKey = privateKey;
@@ -45,8 +44,7 @@ public class DiffieHelman {
     }
 
     public int calculateSecondaryKey() {
-        secondaryKey = (int) (Math.pow(exchangedKey, privateKey) % generateKey);
-        return secondaryKey;
+        return (int) (Math.pow(exchangedKey, privateKey) % generateKey);
     }
 
 }
