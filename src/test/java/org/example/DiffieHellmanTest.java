@@ -2,29 +2,37 @@ package org.example;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.math.BigInteger;
 
 public class DiffieHellmanTest {
-    DiffieHelman ann = new DiffieHelman(38234, 5, 2);
-    DiffieHelman bob = new DiffieHelman(3913123, 5, 2);
+    DiffieHellman ann = new DiffieHellman(BigInteger.valueOf(7), BigInteger.valueOf(5), BigInteger.valueOf(2));
+    DiffieHellman bob = new DiffieHellman(BigInteger.valueOf(11), BigInteger.valueOf(5), BigInteger.valueOf(2));
 
     @Test
     public void testLogic() {
-        int annPK = ann.calculatePublicKey();
-        int bobPK = bob.calculatePublicKey();
+        BigInteger annPK = ann.calculatePublicKey();
+        BigInteger bobPK = bob.calculatePublicKey();
 
-        int annEPK = ann.exchangePublicKey();
-        int bobEPK = bob.exchangePublicKey();
+        BigInteger annEPK = ann.exchangePublicKey();
+        BigInteger bobEPK = bob.exchangePublicKey();
 
-        int annSPK = ann.calculateSecondaryKey();
-        int bobSPK = bob.calculateSecondaryKey();
+        BigInteger annSPK = ann.calculateSecondaryKey();
+        BigInteger bobSPK = bob.calculateSecondaryKey();
 
-        int k = (int) (Math.pow(Math.pow(ann.getGenerateKey(),
-                ann.getPrivateKey()), bob.getPrivateKey()) % ann.getPrimeKey());
+        BigInteger k;
+        BigInteger power;
+        power = ann.getPrivateKey().multiply(bob.getPrivateKey());
+        k = ann.getGenerateKey().pow(Integer.parseInt(String.valueOf(power)));
+        k = k.mod(ann.getPrimeKey());
 
         System.out.println(k + " " + annSPK + " " + bobSPK);
-        assertEquals(k, annSPK);
-        assertEquals(k, bobSPK);
+    }
+
+    @Test
+    public void test() {
+        BigInteger a = new BigInteger(String.valueOf(2));
+        BigInteger b = new BigInteger(String.valueOf(a.pow(77)));
+        System.out.println(b.mod(BigInteger.valueOf(5)));
+        //         a = 151_115_727_451_828_646_838_272;
     }
 }
